@@ -1,0 +1,18 @@
+.vscode*/
+out_test/**
+src/**
+examples/**
+scripts/**
+
+# files
+*.md
+!README.md
+!CHANGELOG.md
+*.mjs
+*.ts
+
+tsconfig.json
+**/*.map
+node_modules/**
+.gitignore
+**/*-lock.*

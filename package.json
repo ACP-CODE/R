@@ -1,0 +1,45 @@
+{
+  "name": "root",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A monorepo workspace for Visual Studio Code extensions.",
+  "license": "MIT",
+  "author": "Solus inc.",
+  "type": "module",
+  "scripts": {
+    "prepare": "git config core.hooksPath .vite-hooks || true",
+    "postinstall": "node scripts/vscode-sync.ts",
+    "fmt": "vp fmt",
+    "lint": "vp lint",
+    "check": "vp check",
+    "test:ci": "vpr -r test",
+    "test": "node scripts/run.ts test",
+    "_precompile": "vpr check && vpr test:ci",
+    "compile": "node scripts/run.ts compile",
+    "prewatch": "vpr vscode:sync",
+    "watch": "node scripts/run.ts watch",
+    "rolldown": "node scripts/run.ts rolldown",
+    "vsce": "node scripts/run.ts vsce",
+    "docs:update": "node scripts/run.ts docs:update",
+    "docs:update:static": "node scripts/run.ts docs:update:static",
+    "vscode:sync": "node scripts/vscode-sync.ts",
+    "vscode:sync:check": "node scripts/vscode-sync.ts && git diff --exit-code .vscode/launch.json .vscode/tasks.json"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.0",
+    "vite-plus": "^0.3.0"
+  },
+  "config": {
+    "app": "r"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.24.0",
+      "onFail": "download"
+    }
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  }
+}

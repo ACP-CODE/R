@@ -1,0 +1,47 @@
+name: Bug Report
+description: 报告一个可复现的问题
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+    - type: input
+      id: version
+      attributes:
+          label: Extension Version
+          description: "在 VS Code 里执行 `Extensions: Show Installed Extensions` 查看"
+          placeholder: "0.0.1"
+      validations:
+          required: true
+
+    - type: input
+      id: vscode-version
+      attributes:
+          label: VS Code Version
+          placeholder: "1.105.0"
+      validations:
+          required: true
+
+    - type: textarea
+      id: what-happened
+      attributes:
+          label: 发生了什么
+          description: 期望行为 vs 实际行为
+      validations:
+          required: true
+
+    - type: textarea
+      id: repro
+      attributes:
+          label: 复现步骤
+          placeholder: |
+              1. ...
+              2. ...
+              3. ...
+      validations:
+          required: true
+
+    - type: textarea
+      id: logs
+      attributes:
+          label: 相关日志 / 截图
+          description: Output 面板（选择本扩展的 Channel）里的日志，或者报错截图
+          render: shell

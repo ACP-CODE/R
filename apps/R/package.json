@@ -1,0 +1,108 @@
+{
+  "name": "r",
+  "displayName": "%displayName%",
+  "version": "0.0.1",
+  "private": "true",
+  "description": "%description%",
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "extension",
+    "vscode"
+  ],
+  "bugs": {
+    "url": "https://github.com/ACP-CODE/vscode-extension/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Cyril",
+    "email": "jakichen@live.cn"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ACP-CODE/vscode-extension.git"
+  },
+  "sponsor": {
+    "url": "https://slous.inc/sponsor"
+  },
+  "publisher": "Solus",
+  "main": "./out/extension.js",
+  "scripts": {
+    "vscode:prepublish": "vpr compile && vpr docs:update",
+    "compile": "rolldown -c rolldown.config.ts",
+    "watch": "vpr compile --watch",
+    "pretest": "TEST=true vpr compile && vp lint",
+    "test": "vp test && vscode-test",
+    "test:unit": "TEST_SUITE=unit vscode-test",
+    "rolldown": "rolldown -c rolldown.config.ts",
+    "vsce": "vsce",
+    "docs:update": "node scripts/docs/index.ts update && vp fmt",
+    "docs:update:static": "DOCS_SKIP_DYNAMIC=true node scripts/docs/index.ts update && vp fmt"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.0",
+    "@types/vscode": "1.105.0",
+    "@vscode/test-cli": "^0.0.15",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^3.9.2",
+    "rolldown": "^1.2.6"
+  },
+  "l10n": "./l10n",
+  "contributes": {
+    "walkthroughs": [],
+    "icons": {
+      "my-icon-id": {
+        "description": "my icon",
+        "default": {
+          "fontPath": "myiconfont.woff",
+          "fontCharacter": "\\E001"
+        }
+      }
+    },
+    "terminal": {
+      "profiles": [
+        {
+          "title": "R",
+          "id": "r.terminalProfile"
+        }
+      ]
+    },
+    "languages": [],
+    "grammars": [
+      {
+        "language": "id",
+        "scopeName": "source.id",
+        "path": "./syntaxes/id.tmLanguage."
+      }
+    ],
+    "snippets": [],
+    "commands": [
+      {
+        "command": "extension.helloWorld",
+        "title": "Hello World"
+      }
+    ],
+    "configuration": {
+      "properties": {}
+    },
+    "keybindings": [],
+    "menus": {},
+    "submenus": [],
+    "problemMatchers": [],
+    "taskDefinitions": [],
+    "views": {
+      "explorer": []
+    },
+    "viewsWelcome": [
+      {
+        "view": "explorer",
+        "contents": "",
+        "when": "workspaceFolderCount == 0 && config.R.showCreateRProjectInWelcomePage"
+      }
+    ]
+  },
+  "engines": {
+    "vscode": "^1.105.0"
+  }
+}

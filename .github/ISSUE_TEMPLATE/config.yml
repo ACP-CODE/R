@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+    - name: 提问 / 讨论
+      url: https://github.com/ACP-CODE/vscode-extension/discussions
+      about: 使用上的疑问、想法讨论，不确定是不是 bug 时优先在这里聊

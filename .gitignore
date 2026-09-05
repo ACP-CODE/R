@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build output
+out/
+out_test/
+dist/
+*.vsix
+
+# Tauri（未来子包若引入 Tauri 会产生这些）
+src-tauri/target/
+
+# Test / coverage
+coverage/
+.vscode-test/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Env
+.env
+.env.local
+
+# OS
+*.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
