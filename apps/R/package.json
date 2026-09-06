@@ -1,14 +1,20 @@
 {
   "name": "r",
   "displayName": "%displayName%",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": "true",
   "description": "%description%",
   "categories": [
-    "Other"
+    "Debuggers",
+    "Formatters",
+    "Linters",
+    "Programming Languages"
   ],
   "keywords": [
     "extension",
+    "language-server",
+    "r",
+    "rstats",
     "vscode"
   ],
   "bugs": {
@@ -40,26 +46,74 @@
     "docs:update": "node scripts/docs/index.ts update && vp fmt",
     "docs:update:static": "DOCS_SKIP_DYNAMIC=true node scripts/docs/index.ts update && vp fmt"
   },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
   "devDependencies": {
     "@types/node": "^22.20.0",
     "@types/vscode": "1.105.0",
     "@vscode/test-cli": "^0.0.15",
     "@vscode/test-electron": "^3.1.0",
     "@vscode/vsce": "^3.9.2",
-    "rolldown": "^1.2.6"
+    "rolldown": "^1.2.6",
+    "vitest": "^5.0.0",
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.2.0"
   },
   "l10n": "./l10n",
   "contributes": {
-    "walkthroughs": [],
-    "icons": {
-      "my-icon-id": {
-        "description": "my icon",
-        "default": {
-          "fontPath": "myiconfont.woff",
-          "fontCharacter": "\\E001"
-        }
+    "walkthroughs": [
+      {
+        "id": "r.gettingStarted",
+        "title": "%walkthrough.gettingStarted.title%",
+        "description": "%walkthrough.gettingStarted.description%",
+        "steps": [
+          {
+            "id": "l1.console",
+            "title": "%walkthrough.l1.console.title%",
+            "description": "%walkthrough.l1.console.description%",
+            "media": {
+              "markdown": "walkthroughs/l1/console.md"
+            }
+          },
+          {
+            "id": "l1.variables",
+            "title": "%walkthrough.l1.variables.title%",
+            "description": "%walkthrough.l1.variables.description%",
+            "media": {
+              "markdown": "walkthroughs/l1/variables.md"
+            }
+          },
+          {
+            "id": "l2.script",
+            "title": "%walkthrough.l2.script.title%",
+            "description": "%walkthrough.l2.script.description%",
+            "media": {
+              "markdown": "walkthroughs/l2/script.md"
+            }
+          },
+          {
+            "id": "l2.function",
+            "title": "%walkthrough.l2.function.title%",
+            "description": "%walkthrough.l2.function.description%",
+            "media": {
+              "markdown": "walkthroughs/l2/function.md"
+            }
+          },
+          {
+            "id": "l3.project",
+            "title": "%walkthrough.l3.project.title%",
+            "description": "%walkthrough.l3.project.description%",
+            "media": {
+              "markdown": "walkthroughs/l3/project.md"
+            },
+            "completionEvents": [
+              "onCommand:r.createProject"
+            ]
+          }
+        ]
       }
-    },
+    ],
     "terminal": {
       "profiles": [
         {
@@ -68,26 +122,117 @@
         }
       ]
     },
-    "languages": [],
+    "languages": [
+      {
+        "id": "r",
+        "aliases": [
+          "R",
+          "r"
+        ],
+        "extensions": [
+          ".R",
+          ".r",
+          ".Rprofile"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
     "grammars": [
       {
-        "language": "id",
-        "scopeName": "source.id",
-        "path": "./syntaxes/id.tmLanguage."
+        "language": "r",
+        "scopeName": "source.r",
+        "path": "./syntaxes/r.tmLanguage.json"
       }
     ],
     "snippets": [],
     "commands": [
       {
-        "command": "extension.helloWorld",
-        "title": "Hello World"
+        "command": "r.createProject",
+        "title": "%command.createProject%",
+        "category": "R"
+      },
+      {
+        "command": "r.validateProjectFiles",
+        "title": "%command.validateProjectFiles%",
+        "category": "R"
+      },
+      {
+        "command": "r.restartLanguageServer",
+        "title": "%command.restartLanguageServer%",
+        "category": "R"
+      },
+      {
+        "command": "r.installRPackages",
+        "title": "%command.installRPackages%",
+        "category": "R"
+      },
+      {
+        "command": "r.formatDocument",
+        "title": "%command.formatDocument%",
+        "category": "R"
+      },
+      {
+        "command": "r.openConsole",
+        "title": "%command.openConsole%",
+        "category": "R"
+      },
+      {
+        "command": "r.insertAssignmentOperator",
+        "title": "%command.insertAssignmentOperator%",
+        "category": "R"
       }
     ],
     "configuration": {
-      "properties": {}
+      "title": "R",
+      "properties": {
+        "R.rpath.executable": {
+          "type": "string",
+          "default": "",
+          "description": "%config.rpath.executable%"
+        },
+        "R.showCreateRProjectInWelcomePage": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.showCreateRProjectInWelcomePage%"
+        },
+        "R.format.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.format.enable%"
+        }
+      }
     },
-    "keybindings": [],
-    "menus": {},
+    "keybindings": [
+      {
+        "command": "r.insertAssignmentOperator",
+        "key": "alt+-",
+        "mac": "alt+-",
+        "when": "editorTextFocus && editorLangId == r"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "r.createProject"
+        },
+        {
+          "command": "r.validateProjectFiles"
+        },
+        {
+          "command": "r.restartLanguageServer"
+        },
+        {
+          "command": "r.installRPackages"
+        },
+        {
+          "command": "r.formatDocument",
+          "when": "editorLangId == r"
+        },
+        {
+          "command": "r.openConsole"
+        }
+      ]
+    },
     "submenus": [],
     "problemMatchers": [],
     "taskDefinitions": [],
@@ -97,11 +242,16 @@
     "viewsWelcome": [
       {
         "view": "explorer",
-        "contents": "",
+        "contents": "%viewsWelcome.explorer.contents%",
         "when": "workspaceFolderCount == 0 && config.R.showCreateRProjectInWelcomePage"
       }
     ]
   },
+  "activationEvents": [
+    "onCommand:r.createProject",
+    "onLanguage:r",
+    "workspaceContains:**/*.Rproj"
+  ],
   "engines": {
     "vscode": "^1.105.0"
   }

@@ -1,0 +1,151 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "R",
+  "scopeName": "source.r",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#raw-strings" },
+    { "include": "#strings" },
+    { "include": "#backtick-identifiers" },
+    { "include": "#numbers" },
+    { "include": "#function-definition" },
+    { "include": "#keywords" },
+    { "include": "#constants" },
+    { "include": "#function-calls" },
+    { "include": "#parameter-names" },
+    { "include": "#operators" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        { "include": "#section-header" },
+        { "include": "#roxygen-comment" },
+        {
+          "name": "comment.line.number-sign.r",
+          "match": "#.*$"
+        }
+      ]
+    },
+    "section-header": {
+      "comment": "RStudio-style foldable section comment, e.g. `# Load data ----`",
+      "match": "(#+)\\s*(.*?)\\s*((?:-{4,}|={4,}|#{4,}))\\s*$",
+      "captures": {
+        "1": { "name": "punctuation.definition.comment.r" },
+        "2": { "name": "comment.line.section-header.r markup.heading.r" },
+        "3": { "name": "punctuation.section-header.trailer.r" }
+      }
+    },
+    "roxygen-comment": {
+      "comment": "roxygen2 documentation comment, tags like @param/@export get their own scope",
+      "begin": "#'",
+      "beginCaptures": { "0": { "name": "punctuation.definition.comment.roxygen.r" } },
+      "end": "$",
+      "name": "comment.line.roxygen.r",
+      "patterns": [
+        {
+          "name": "keyword.other.roxygen-tag.r",
+          "match": "@(param|return|returns|export|examples|importFrom|import|description|details|title|seealso|section|inheritParams|family|noRd|keywords|rdname|usage|slot|field|template|author|references|note|format)\\b"
+        },
+        {
+          "name": "variable.parameter.roxygen.r",
+          "match": "(?<=@param)\\s+\\S+"
+        }
+      ]
+    },
+    "raw-strings": {
+      "comment": "R >= 4.0 raw strings: r\"(...)\", R\"[...]\", r\"---(...)---\", etc.",
+      "patterns": [
+        {
+          "name": "string.quoted.other.raw.r",
+          "begin": "\\b([rR])(\"|')(-*)(\\(|\\[|\\{)",
+          "beginCaptures": {
+            "1": { "name": "storage.type.string.raw.r" },
+            "2": { "name": "punctuation.definition.string.begin.r" }
+          },
+          "end": "(\\)|\\]|\\})\\3\\2",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.string.end.r" }
+          }
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.r",
+          "begin": "\"",
+          "beginCaptures": { "0": { "name": "punctuation.definition.string.begin.r" } },
+          "end": "\"",
+          "endCaptures": { "0": { "name": "punctuation.definition.string.end.r" } },
+          "patterns": [{ "name": "constant.character.escape.r", "match": "\\\\(.|$)" }]
+        },
+        {
+          "name": "string.quoted.single.r",
+          "begin": "'",
+          "beginCaptures": { "0": { "name": "punctuation.definition.string.begin.r" } },
+          "end": "'",
+          "endCaptures": { "0": { "name": "punctuation.definition.string.end.r" } },
+          "patterns": [{ "name": "constant.character.escape.r", "match": "\\\\(.|$)" }]
+        }
+      ]
+    },
+    "backtick-identifiers": {
+      "name": "variable.other.backtick.r",
+      "begin": "`",
+      "beginCaptures": { "0": { "name": "punctuation.definition.variable.r" } },
+      "end": "`",
+      "endCaptures": { "0": { "name": "punctuation.definition.variable.r" } }
+    },
+    "numbers": {
+      "comment": "Order matters: hex before decimal, decimal-with-exponent before plain int.",
+      "patterns": [
+        { "name": "constant.numeric.hex.r", "match": "\\b0[xX][0-9a-fA-F]+[Li]?\\b" },
+        {
+          "name": "constant.numeric.float.r",
+          "match": "\\b\\d+\\.\\d*([eE][+-]?\\d+)?[iL]?\\b|\\B\\.\\d+([eE][+-]?\\d+)?[iL]?\\b"
+        },
+        { "name": "constant.numeric.integer.r", "match": "\\b\\d+[eE][+-]?\\d+[iL]?\\b" },
+        { "name": "constant.numeric.integer.r", "match": "\\b\\d+[iL]?\\b" }
+      ]
+    },
+    "keywords": {
+      "name": "keyword.control.r",
+      "match": "(?<![\\w.])(if|else|repeat|while|for|next|break|in)(?![\\w.])"
+    },
+    "constants": {
+      "name": "constant.language.r",
+      "match": "(?<![\\w.])(TRUE|FALSE|NULL|NA|NA_integer_|NA_real_|NA_character_|NA_complex_|Inf|NaN|T|F|LETTERS|letters|pi)(?![\\w.])"
+    },
+    "function-definition": {
+      "comment": "`name <- function(...)` / `name = function(...)`: highlight the LHS as a function name, not a plain variable, so it reads the way a definition does in TS/JS.",
+      "match": "([a-zA-Z.][a-zA-Z0-9._]*)\\s*(<-|<<-|=)\\s*(?=function\\s*\\()",
+      "captures": {
+        "1": { "name": "entity.name.function.definition.r" },
+        "2": { "name": "keyword.operator.assignment.r" }
+      }
+    },
+    "function-calls": {
+      "match": "\\b([a-zA-Z.][a-zA-Z0-9._]*)\\s*(?=\\()",
+      "name": "entity.name.function.r"
+    },
+    "parameter-names": {
+      "comment": "`name =` inside a call/definition's argument list reads as a named argument, not a variable read.",
+      "match": "(?<=[(,])\\s*([a-zA-Z.][a-zA-Z0-9._]*)\\s*(?==(?!=))",
+      "captures": { "1": { "name": "variable.parameter.r" } }
+    },
+    "operators": {
+      "patterns": [
+        { "name": "keyword.operator.pipe.r", "match": "(\\|>|%>%|%\\$%|%<>%)" },
+        { "name": "keyword.operator.special.r", "match": "%[^%\\s]*%" },
+        { "name": "keyword.operator.assignment.r", "match": "(<<-|->>|<-|->|=)" },
+        { "name": "keyword.operator.namespace.r", "match": "(:::|::)" },
+        { "name": "keyword.operator.formula.r", "match": "~" },
+        { "name": "keyword.operator.comparison.r", "match": "(==|!=|<=|>=|<|>)" },
+        { "name": "keyword.operator.logical.r", "match": "(&&|\\|\\||&|\\||!)" },
+        { "name": "keyword.operator.range.r", "match": ":" },
+        { "name": "keyword.operator.arithmetic.r", "match": "(\\+|-|\\*|/|\\^)" },
+        { "name": "keyword.operator.accessor.r", "match": "(\\$|@)" }
+      ]
+    }
+  }
+}
