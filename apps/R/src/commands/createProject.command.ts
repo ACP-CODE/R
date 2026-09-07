@@ -1,12 +1,7 @@
 import * as vscode from "vscode";
 import type { ProjectCreatorService, ProjectTier } from "../services/projectCreator.service";
 import type { REnvironmentService } from "../services/rEnvironment.service";
-
-const TIER_OPTIONS: { label: string; description: string; tier: ProjectTier }[] = [
-    { label: "L0 — Script only", description: "Just a .R file, no config", tier: "L0" },
-    { label: "L1 — Standard project", description: ".Rproj + .Rprofile", tier: "L1" },
-    { label: "L2 — Industrial project", description: "L1 + renv::init()", tier: "L2" },
-];
+import { pickProjectTier } from "../services/quickpick/createProjectQuickPick";
 
 export function registerCreateProjectCommand(
     context: vscode.ExtensionContext,
@@ -14,7 +9,7 @@ export function registerCreateProjectCommand(
     rEnvironment: REnvironmentService,
 ): void {
     const disposable = vscode.commands.registerCommand("r.createProject", async () => {
-        const tier = await pickTier();
+        const tier = await pickProjectTier();
         if (!tier) return;
 
         const folder = await pickTargetFolder();
@@ -23,13 +18,6 @@ export function registerCreateProjectCommand(
         await runCreation(tier, folder, projectCreator, rEnvironment);
     });
     context.subscriptions.push(disposable);
-}
-
-async function pickTier(): Promise<ProjectTier | undefined> {
-    const picked = await vscode.window.showQuickPick(TIER_OPTIONS, {
-        placeHolder: "Choose a project tier",
-    });
-    return picked?.tier;
 }
 
 async function pickTargetFolder(): Promise<vscode.Uri | undefined> {

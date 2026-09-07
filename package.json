@@ -7,8 +7,7 @@
   "author": "Solus inc.",
   "type": "module",
   "scripts": {
-    "prepare": "git config core.hooksPath .vite-hooks || true",
-    "postinstall": "node scripts/vscode-sync.ts",
+    "postinstall": "vpr vscode:sync",
     "fmt": "vp fmt",
     "lint": "vp lint",
     "check": "vp check",
